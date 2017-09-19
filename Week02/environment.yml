@@ -1,0 +1,16 @@
+name: cwc_ann
+channels:
+    - conda-forge
+    - defaults
+dependencies:
+    - python=3.6 # use a recent version of python
+    - matplotlib
+    - seaborn
+    - numpy
+    - jupyter
+    - pandas
+    - pip:
+      - tensorflow
+      - keras
+      - pydot
+      - graphviz
