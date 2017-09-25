@@ -9,3 +9,5 @@ package.json
 .Rproj.user
 .Rhistory
 _temp_posts/*
+*.png
+*/.ipynb_checkpoints/*
