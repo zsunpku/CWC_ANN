@@ -35,6 +35,13 @@ If you've used `Rmarkdown`, it's trying to achieve (very broadly) the same thing
 To test that you have everything working, run `jupyter notebook` in the terminal (if anyone knows what to do on Windows please let us know and we will update!).
 If you can't get it working, ask someone for help!
 
+## More Resources
+
+Check out Tristan's awesome notebooks:
+
+- [XOR Network](https://github.com/TristanEis007/machine-learning/blob/master/Artificial%20Neural%20Networks%20in%20TensorFlow%20-%20The%20XOR%20function.ipynb)
+- [Image Classification](https://github.com/TristanEis007/machine-learning/blob/master/Artificial%20Neural%20Networks%20in%20TensorFlow%20-%20Image%20Classification.ipynb)
+
 ## How Far Should I Go?
 
 If you can get a jupyter notebook to open, and have some *basic* ability to read `python`, you'll be good for next Tuesday!
