@@ -11,3 +11,4 @@ package.json
 _temp_posts/*
 *.png
 */.ipynb_checkpoints/*
+Week03/pollution.csv
