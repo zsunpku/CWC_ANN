@@ -19,5 +19,8 @@ _region_*
 *.snm
 *~
 *.toc
+*.bcf
+*blg
+*.run.xml
 prv_*
 Week03/pollution.csv

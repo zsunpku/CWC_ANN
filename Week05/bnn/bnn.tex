@@ -15,12 +15,14 @@
 } 
 
 \usepackage[english]{babel}
-\usepackage[utf8x]{inputenc}
+ % \usepackage[utf8x]{inputenc}
+\usepackage[style=authoryear]{biblatex}
+\addbibresource{references.bib}
 
-\title[Your Short Title]{Bayesian Networks}
+\title[Your Short Title]{Bayes Networks and Probalistic Programming}
 \author{Adam Massmann}
 \institute{Water Center NN Meetings}
-\date{Week 5 - Oct. 17th}
+\date{Week 5: Oct. 17th, 2017}
 
 \begin{document}
 
@@ -35,11 +37,11 @@
 
 \section{Introduction - Information Theory}
 
-\begin{frame}{Introduction - Information Theory}
+\begin{frame}{Introduction - Information Theory (see section 1.6 in Bishop)}
 % \vskip 1cm
 \begin{itemize}
-\item Consider the ammount of information gained/learned by an event or observation (we'll call $x$). We would receive more new information from a very suprising event than an event we expect.
-\item So say we want to quantify the ``ammount of information'' contained in an event. This should then be a function of the probability of the event ($p(x)$). So the ammount of information we'll call a function $h(\cdot )$ will be a function of $p(x)$.
+\item Consider the amount of information gained/learned by an event or observation (we'll call $x$). We would receive more new information from a very surprising event than an event we expect (because we already know something about the expected event).
+\item So say we want to quantify this ``amount of information'' contained in an event. This should then be a function of the probability of the event ($p(x)$). So the amount of information we'll call a function $h(\cdot )$, which will be a function of $p(x)$.
 \end{itemize}
 
 \end{frame}
@@ -48,9 +50,9 @@
 \begin{frame}{Guidance for the functional from of $h(\cdot ) $}
 % \vskip 1cm
 \begin{itemize}
-\item If two events $x$ and $y$ are independent, then the ammount of information gained by both events should be $h(x,y) = h(x) + h(y)$.
-\item We also know that the joint probability of $x$ and $y$'s occurence would be: $p(x,y) = p(x) \; p(y)$.
-  \item So the question is, what function $h$ satisfies: $h(p(x,y)) = h(p(x)\; p(y)) = h(p(x)) + h(p(y))$?
+\item If two events $x$ and $y$ are independent, then the amount of information gained by both events should be $h(x,y) = h(x) + h(y)$.
+\item We also know that the joint probability of $x$ and $y$'s occurrence would be: $p(x,y) = p(x) \; p(y)$.
+  \item So the question is, what function $\hat{h}$ satisfies: $h(x,y) = \hat{h}(p(x)\; p(y)) = \hat{h}(p(x)) + \hat{h}(p(y))$?
 \end{itemize}
 
 \end{frame}
@@ -60,56 +62,57 @@
 \begin{frame}{Information Entropy}
 % \vskip 1cm
 \begin{itemize}
-\item $h(\cdot ) = \log ( p(\cdot ))$ satisfies $h(p(x,y)) = h(p(x)\; p(y)) = h(p(x)) + h(p(y))$
-\item Its desirable for $h$ to be postiive, so because $0 \leq p \leq 1$, lets make it $h(\cdot ) = -\log p(\cdot )$.
-\item Now say we have a bunch of random variables $x$ for which we want to know the average ammount of information (i.e. expectation of $h(x)$). This would be given by:
+\item $\hat{h}(\cdot ) = \log ( \cdot )$ satisfies $h(x,y) = \hat{h}(p(x)\; p(y)) = \hat{h}(p(x)) + \hat{h}(p(y))$, so $h(\cdot ) = \log(p(\cdot ))$.
+\item It's desirable for $h$ to be positive, so because $0 \leq p \leq 1$, lets make it $h(\cdot ) = -\log p(\cdot )$.
+\item Now say we have a bunch of random variables $x$ for which we want to know the average amount of information (i.e. expectation of $h(x)$). This would be given by:
   \[H[x] = - \sum_x p(x) \log p(x) \]
 \item This is known as the \textit{entropy} of $x$.
-\item Extending this to continuous variabiles gives the \textit{differential entropy}:
-  \[H[x] = - \int p(x)\, \log p(x)\, dx\]
+\item Extending this to continuous variables gives the \textit{differential entropy}:
+  \[H[x] = - \int p(x)\, \log p(x)\, dx\][\cite{bishop}, \cite{shannon1948}]
 \end{itemize}
-
 \end{frame}
 
-\section{Some \LaTeX{} Examples}
-
-\subsection{Tables and Figures}
-
-\begin{frame}{Tables and Figures}
-
+\begin{frame}{So what does information entropy look like?}
+    % \vskip 1cm
 \begin{itemize}
-\item Use \texttt{tabular} for basic tables --- see Table~\ref{tab:widgets}, for example.
-\item You can upload a figure (JPEG, PNG or PDF) using the files menu. 
-\item To include it in your document, use the \texttt{includegraphics} command (see the comment below in the source code).
+\item From thermodynamics and statistical mechanics we have some idea of entropy as a measure of the disorder or randomness in a system. For information theory it is similar.\footnote{von Neumann told Shannon he should also call it entropy because ``nobody knows what entropy really is, so in any discussion you will always have an advantage.''}
 \end{itemize}
 
-% Commands to include a figure:
-%\begin{figure}
-%\includegraphics[width=\textwidth]{your-figure's-file-name}
-%\caption{\label{fig:your-figure}Caption goes here.}
-%\end{figure}
-
-\begin{table}
-\centering
-\begin{tabular}{l|r}
-Item & Quantity \\\hline
-Widgets & 42 \\
-Gadgets & 13
-\end{tabular}
-\caption{\label{tab:widgets}An example table.}
-\end{table}
+\begin{figure}
+\includegraphics[width=3in]{entropy.png}
+\caption{\label{fig:entropy}From \cite{bishop}: Histograms of two probability distributions over thirty bins illustrating the higher value of entropy H for the broader distribution. The largest entropy would arise from a uniform distribution that would give $H = -ln 1/30 = 3.40$}
+\end{figure}
 
 \end{frame}
 
-\subsection{Mathematics}
 
-\begin{frame}{Readable Mathematics}
-
-Let $X_1, X_2, \ldots, X_n$ be a sequence of independent and identically distributed random variables with $\text{E}[X_i] = \mu$ and $\text{Var}[X_i] = \sigma^2 < \infty$, and let
-$$S_n = \frac{X_1 + X_2 + \cdots + X_n}{n}
-      = \frac{1}{n}\sum_{i}^{n} X_i$$
-denote their mean. Then as $n$ approaches infinity, the random variables $\sqrt{n}(S_n - \mu)$ converge in distribution to a normal $\mathcal{N}(0, \sigma^2)$.
-
+\section{Kullback-Leibler divergence}
+\begin{frame}{Kullback-Leibler divergence}
+\begin{itemize}
+\item Why should we even care about information theory or entropy?
+  \begin{itemize}
+  \item Because we can use entropy ideas to perfrom inference on a probalistic model (e.g. a Bayes network), given data.
+  \end{itemize}
+\end{itemize}
 \end{frame}
+
+
+\section{References}
+\begin{frame}{References}
+  \begin{block}
+    \printbibliography
+    \end{block}
+\end{frame}
+
+% \begin{table}
+% \centering
+% \begin{tabular}{l|r}
+% Item & Quantity \\\hline
+% Widgets & 42 \\
+% Gadgets & 13
+% \end{tabular}
+% \caption{\label{tab:widgets}An example table.}
+% \end{table}
+
 
 \end{document}
