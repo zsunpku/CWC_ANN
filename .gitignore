@@ -11,4 +11,16 @@ package.json
 _temp_posts/*
 *.png
 */.ipynb_checkpoints/*
+_region_*
+*.aux
+*.log
+*.nav
+*.out
+*.snm
+*~
+*.toc
+*.bcf
+*blg
+*.run.xml
+prv_*
 Week03/pollution.csv

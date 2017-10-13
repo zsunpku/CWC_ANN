@@ -1,0 +1,118 @@
+\documentclass{beamer}
+%
+% Choose how your presentation looks.
+%
+% For more themes, color themes and font themes, see:
+% http://deic.uab.es/~iblanes/beamer_gallery/index_by_theme.html
+%
+\mode<presentation>
+{
+  \usetheme{default}      % or try Darmstadt, Madrid, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}  % or try serif, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+} 
+
+\usepackage[english]{babel}
+ % \usepackage[utf8x]{inputenc}
+\usepackage[style=authoryear]{biblatex}
+\addbibresource{references.bib}
+
+\title[Your Short Title]{Bayes Networks and Probalistic Programming}
+\author{Adam Massmann}
+\institute{Water Center NN Meetings}
+\date{Week 5: Oct. 17th, 2017}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% Uncomment these lines for an automatically generated outline.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\section{Introduction - Information Theory}
+
+\begin{frame}{Introduction - Information Theory (see section 1.6 in Bishop)}
+% \vskip 1cm
+\begin{itemize}
+\item Consider the amount of information gained/learned by an event or observation (we'll call $x$). We would receive more new information from a very surprising event than an event we expect (because we already know something about the expected event).
+\item So say we want to quantify this ``amount of information'' contained in an event. This should then be a function of the probability of the event ($p(x)$). So the amount of information we'll call a function $h(\cdot )$, which will be a function of $p(x)$.
+\end{itemize}
+
+\end{frame}
+
+
+\begin{frame}{Guidance for the functional from of $h(\cdot ) $}
+% \vskip 1cm
+\begin{itemize}
+\item If two events $x$ and $y$ are independent, then the amount of information gained by both events should be $h(x,y) = h(x) + h(y)$.
+\item We also know that the joint probability of $x$ and $y$'s occurrence would be: $p(x,y) = p(x) \; p(y)$.
+  \item So the question is, what function $\hat{h}$ satisfies: $h(x,y) = \hat{h}(p(x)\; p(y)) = \hat{h}(p(x)) + \hat{h}(p(y))$?
+\end{itemize}
+
+\end{frame}
+
+
+
+\begin{frame}{Information Entropy}
+% \vskip 1cm
+\begin{itemize}
+\item $\hat{h}(\cdot ) = \log ( \cdot )$ satisfies $h(x,y) = \hat{h}(p(x)\; p(y)) = \hat{h}(p(x)) + \hat{h}(p(y))$, so $h(\cdot ) = \log(p(\cdot ))$.
+\item It's desirable for $h$ to be positive, so because $0 \leq p \leq 1$, lets make it $h(\cdot ) = -\log p(\cdot )$.
+\item Now say we have a bunch of random variables $x$ for which we want to know the average amount of information (i.e. expectation of $h(x)$). This would be given by:
+  \[H[x] = - \sum_x p(x) \log p(x) \]
+\item This is known as the \textit{entropy} of $x$.
+\item Extending this to continuous variables gives the \textit{differential entropy}:
+  \[H[x] = - \int p(x)\, \log p(x)\, dx\][\cite{bishop}, \cite{shannon1948}]
+\end{itemize}
+\end{frame}
+
+\begin{frame}{So what does information entropy look like?}
+    % \vskip 1cm
+\begin{itemize}
+\item From thermodynamics and statistical mechanics we have some idea of entropy as a measure of the disorder or randomness in a system. For information theory it is similar.\footnote{von Neumann told Shannon he should also call it entropy because ``nobody knows what entropy really is, so in any discussion you will always have an advantage.''}
+\end{itemize}
+
+\begin{figure}
+\includegraphics[width=3in]{entropy.png}
+\caption{\label{fig:entropy}From \cite{bishop}: Histograms of two probability distributions over thirty bins illustrating the higher value of entropy H for the broader distribution. The largest entropy would arise from a uniform distribution that would give $H = -ln 1/30 = 3.40$}
+\end{figure}
+
+\end{frame}
+
+
+\section{Kullback-Leibler divergence}
+\begin{frame}{Kullback-Leibler divergence}
+\begin{itemize}
+\item Why should we even care about information theory or entropy?
+  \begin{itemize}
+  \item Because we can use entropy ideas to perfrom inference on a probalistic model (e.g. a Bayes network), given data.
+  \end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\section{References}
+\begin{frame}{References}
+  \begin{block}
+    \printbibliography
+    \end{block}
+\end{frame}
+
+% \begin{table}
+% \centering
+% \begin{tabular}{l|r}
+% Item & Quantity \\\hline
+% Widgets & 42 \\
+% Gadgets & 13
+% \end{tabular}
+% \caption{\label{tab:widgets}An example table.}
+% \end{table}
+
+
+\end{document}

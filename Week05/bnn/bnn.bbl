@@ -1,0 +1,72 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 2.8 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \sortlist[entry]{nyt/global/}
+    \entry{bishop}{book}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=7952b575a987ace852cfb8965a4da182}{%
+           family={Bishop},
+           familyi={B\bibinitperiod},
+           given={Christopher\bibnamedelima M},
+           giveni={C\bibinitperiod\bibinitdelim M\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {springer}%
+      }
+      \strng{namehash}{7952b575a987ace852cfb8965a4da182}
+      \strng{fullhash}{7952b575a987ace852cfb8965a4da182}
+      \strng{authornamehash}{7952b575a987ace852cfb8965a4da182}
+      \strng{authorfullhash}{7952b575a987ace852cfb8965a4da182}
+      \field{sortinit}{B}
+      \field{sortinithash}{5f6fa000f686ee5b41be67ba6ff7962d}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Pattern recognition and machine learning}
+      \field{year}{2006}
+    \endentry
+    \entry{shannon1948}{article}{}
+      \name{author}{1}{}{%
+        {{uniquename=0,hash=6d0b92a725df53be7ba88caf9a9a522f}{%
+           family={Shannon},
+           familyi={S\bibinitperiod},
+           given={Claude\bibnamedelima E},
+           giveni={C\bibinitperiod\bibinitdelim E\bibinitperiod}}}%
+      }
+      \strng{namehash}{6d0b92a725df53be7ba88caf9a9a522f}
+      \strng{fullhash}{6d0b92a725df53be7ba88caf9a9a522f}
+      \strng{authornamehash}{6d0b92a725df53be7ba88caf9a9a522f}
+      \strng{authorfullhash}{6d0b92a725df53be7ba88caf9a9a522f}
+      \field{sortinit}{S}
+      \field{sortinithash}{3c1547c63380458f8ca90e40ed14b83e}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Bell Syst. Tech. J.}
+      \field{title}{A mathematical theory of communication, Part I, Part II}
+      \field{volume}{27}
+      \field{year}{1948}
+      \field{pages}{623\bibrangedash 656}
+      \range{pages}{34}
+    \endentry
+  \endsortlist
+\endrefsection
+\endinput
+
