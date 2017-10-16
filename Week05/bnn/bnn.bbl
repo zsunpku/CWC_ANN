@@ -42,6 +42,39 @@
       \field{title}{Pattern recognition and machine learning}
       \field{year}{2006}
     \endentry
+    \entry{kullback1951}{article}{}
+      \name{author}{2}{}{%
+        {{uniquename=0,hash=34c5bbf9876c37127c3abe4e7d7a7198}{%
+           family={Kullback},
+           familyi={K\bibinitperiod},
+           given={Solomon},
+           giveni={S\bibinitperiod}}}%
+        {{uniquename=0,hash=0f1e025fda393899e77dc20789870e5c}{%
+           family={Leibler},
+           familyi={L\bibinitperiod},
+           given={Richard\bibnamedelima A},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {JSTOR}%
+      }
+      \strng{namehash}{e6fdcff7e8aa04b4c176fa42cc3b4ad7}
+      \strng{fullhash}{e6fdcff7e8aa04b4c176fa42cc3b4ad7}
+      \strng{authornamehash}{e6fdcff7e8aa04b4c176fa42cc3b4ad7}
+      \strng{authorfullhash}{e6fdcff7e8aa04b4c176fa42cc3b4ad7}
+      \field{sortinit}{K}
+      \field{sortinithash}{4c244ceae61406cdc0cc2ce1cb1ff703}
+      \field{labeldatesource}{year}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{The annals of mathematical statistics}
+      \field{number}{1}
+      \field{title}{On information and sufficiency}
+      \field{volume}{22}
+      \field{year}{1951}
+      \field{pages}{79\bibrangedash 86}
+      \range{pages}{8}
+    \endentry
     \entry{shannon1948}{article}{}
       \name{author}{1}{}{%
         {{uniquename=0,hash=6d0b92a725df53be7ba88caf9a9a522f}{%

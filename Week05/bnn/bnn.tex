@@ -41,7 +41,7 @@
 % \vskip 1cm
 \begin{itemize}
 \item Consider the amount of information gained/learned by an event or observation (we'll call $x$). We would receive more new information from a very surprising event than an event we expect (because we already know something about the expected event).
-\item So say we want to quantify this ``amount of information'' contained in an event. This should then be a function of the probability of the event ($p(x)$). So the amount of information we'll call a function $h(\cdot )$, which will be a function of $p(x)$.
+\item So if we want to quantify this ``amount of information'' contained in an event we should use a function of the probability of the event ($p(x)$). The amount of information we'll call a function $h(\cdot )$, which will be a function of $p(x)$.
 \end{itemize}
 
 \end{frame}
@@ -80,7 +80,7 @@
 
 \begin{figure}
 \includegraphics[width=3in]{entropy.png}
-\caption{\label{fig:entropy}From \cite{bishop}: Histograms of two probability distributions over thirty bins illustrating the higher value of entropy H for the broader distribution. The largest entropy would arise from a uniform distribution that would give $H = -ln 1/30 = 3.40$}
+\caption{\label{fig:entropy}From \cite{bishop}: Histograms of two probability distributions over thirty bins illustrating the higher value of entropy H for the broader distribution. The largest entropy would arise from a uniform distribution that would give $H = -\ln 1/30 = 3.40$}
 \end{figure}
 
 \end{frame}
@@ -92,16 +92,34 @@
 \item Why should we even care about information theory or entropy?
   \begin{itemize}
   \item Because we can use entropy ideas to perfrom inference on a probalistic model (e.g. a Bayes network), given data.
+  \item Say we have some phenomenon with a true probability distribution $p(x)$, which we are approximating with some [possibly parametric] distibution $q(x)$.
+  \item Then the additional necesary information required to communicate the value of $x$ as consequence of using $q(x)$ would be:
   \end{itemize}
 \end{itemize}
+\begin{equation}
+  \begin{split}
+    KL(p||q) & = - \int p(x) \ln q(x) dx \, - \left(-\int p(x) \ln p(x) dx \right) \\
+    & =  - \int p(x) \ln  \frac{q(x)}{p(x)}
+  \end{split}
+\end{equation}
+  This is known as relative entropy or  Kullback-Leibler (KL) divergence (\cite{kullback1951}).
+\end{frame}
+
+\begin{frame}{Properties of Kullback-Leibler divergence}
+  \begin{itemize}
+  \item Note that it is not a symmetrical quantity (e.g. $KL(p||q) \ne KL(q||p)$).
+  \item Also, $KL(p||q) \ge 0$,
+  \item and $KL(p||q) = 0$ only if p and q are identical (see \cite{bishop} for proof).
+  \item So practically speaking KL divergence is very useful as a cost function quantifying the similarity between two probability distributions.
+  \end{itemize}
 \end{frame}
 
 
 \section{References}
 \begin{frame}{References}
-  \begin{block}
+  \begin{block}{See section 1.6 in Bishop}
     \printbibliography
-    \end{block}
+  \end{block}
 \end{frame}
 
 % \begin{table}
