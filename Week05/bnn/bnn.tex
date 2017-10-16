@@ -114,6 +114,18 @@
   \end{itemize}
 \end{frame}
 
+\begin{frame}{Using KL divergence for inference}
+  \begin{itemize}
+  \item Say we have $N$ observations of data $x_n$ from some unknown probaility distribution $p(x)$.
+  \item We want to try to approximate $p(x)$ with a parametric disribution $q(x|\theta)$, by minimizing the KL diverence which can be approximated by:
+  \end{itemize}
+  \begin{equation}
+    KL(p||q) \simeq \frac{1}{N} \sum_{n=1}^{N} \left[ -\ln q(x_n | \theta) + ln(p (x_n))\right]
+  \end{equation}
+  \begin{itemize}
+  \item The second term is not a function of $\theta$, and the first term is just the negative log liklihood. So for this example, minimizing KL-divergence is the same as minimizing the negative log liklihood, which we saw in Week 1!
+  \end{itemize}
+\end{frame}
 
 \section{References}
 \begin{frame}{References}
