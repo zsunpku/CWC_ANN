@@ -36,7 +36,7 @@
 %\end{frame}
 
 \begin{frame}{Disclaimer}
-  Similiar to the week 1 presentation:
+  Similar to the week 1 presentation:
   \begin{itemize}
   \item None of this content is original; it is all adapted from Sections 1.6, 9.4 and 10.1 in \cite{bishop}, as well as extensively from Edward's documentation at edwardlib.org (\cite{tran2016}), but any mistakes or typos are certainly my own.
   \item This is only intended for use within CWC, just because there is a lot of stuff I don't fully understand so there might be some errors that need to be ironed out. I think of it as a starting point that will hopefully inspire some future discussions which will help us learn this stuff together.
@@ -62,7 +62,7 @@
     \item Numerical methods can be more complicated and some problems are intractable.
     \item Sensitivity to prior?
       \begin{itemize}
-      \item Edward Box advocates critisizm of model (including choice of prior) which could overcome this (\cite{box1982}).
+      \item Edward Box advocates criticism of model (including choice of prior) which could overcome this (\cite{box1982}).
       \end{itemize}
       \item Seems like BNN are a little less ``plug and play.'' Hyperparameters, step sizes, etc. might need to be adjusted to get reasonable fits, and numerical methods for inference seem less universal (forum discourse.edward.org has some example issues users come across).
     \end{itemize}
@@ -133,9 +133,9 @@
 \begin{itemize}
 \item Why should we even care about information theory or entropy?
   \begin{itemize}
-  \item Because we can use entropy ideas to approximate inference on a probalistic model, given data.
-  \item Say we have some phenomenon with a true probability distribution $p(x)$, which we are approximating with some [possibly parametric] distibution $q(x)$.
-  \item Then the additional necesary information required to communicate the value of $x$ as consequence of using $q(x)$ would be:
+  \item Because we can use entropy ideas to approximate inference on a probabilistic model, given data.
+  \item Say we have some phenomenon with a true probability distribution $p(x)$, which we are approximating with some [possibly parametric] distribution $q(x)$.
+  \item Then the additional necessary information required to communicate the value of $x$ as consequence of using $q(x)$ would be:
   \end{itemize}
 \end{itemize}
 \begin{equation}
@@ -152,35 +152,35 @@
   \item Note that it is not a symmetrical quantity (e.g. $KL(p\|q) \ne KL(q\|p)$).
   \item Also, $KL(p\|q) \ge 0$,
   \item and $KL(p\|q) = 0$ only if p and q are identical (see \cite{bishop} for proof).
-  \item So practically speaking KL diverpgence is very useful as a cost function quantifying the similarity between two probability distributions.
+  \item So practically speaking KL divergence is very useful as a cost function quantifying the similarity between two probability distributions.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Equivalence of KL divergence and negative log liklihood}
+\begin{frame}{Equivalence of KL divergence and negative log likelihood}
   \begin{itemize}
-  \item Say we have $N$ observations of data $x_n$ from some unknown probaility distribution $p(x)$.
-  \item We want to try to approximate $p(x)$ with a parametric disribution $q(x|\theta)$, by minimizing the KL diverence which can be approximated by:
+  \item Say we have $N$ observations of data $x_n$ from some unknown probability distribution $p(x)$.
+  \item We want to try to approximate $p(x)$ with a parametric distribution $q(x|\theta)$, by minimizing the KL divergence which can be approximated by:
   \end{itemize}
   \begin{equation}
     KL(p\|q) \simeq \frac{1}{N} \sum_{n=1}^{N} \left[ -\ln q(x_n | \theta) + ln(p (x_n))\right]
   \end{equation}
   \begin{itemize}
-  \item The second term is not a function of $\theta$, and the first term is just the negative log liklihood. So for this example, minimizing KL-divergence is the same as minimizing the negative log liklihood, which we saw in Week 1!
+  \item The second term is not a function of $\theta$, and the first term is just the negative log likelihood. So for this example, minimizing KL-divergence is the same as minimizing the negative log likelihood, which we saw in Week 1!
   \end{itemize}
 \end{frame}
 
 \begin{frame}{KL divergence for Bayesian problems}
   \begin{itemize}
-  \item Say we have some group of latent variables $z$ that define a hidden structure behind our data $x$. We can use Bayes' rule to define the distritbution of $z$ given our observed data $x$ (the \textit{posterior}):
+  \item Say we have some group of latent variables $z$ that define a hidden structure behind our data $x$. We can use Bayes' rule to define the distribution of $z$ given our observed data $x$ (the \textit{posterior}):
     \[p(z \mid x) = \frac{p(x, z)}{\int p(x, z) dz} = \frac{p(x|z) p(z)}{p(x)}\]
-  \item The main computational problem in calculating the posterior is that the normalizing constant is usually intractable. So instead of calcualting the posterior we will approximate the posterior.
+  \item The main computational problem in calculating the posterior is that the normalizing constant is usually intractable. So instead of calculating the posterior we will approximate the posterior.
   \end{itemize}
 \end{frame}
 
 \begin{frame}{Approximating the posterior}
   \begin{itemize}
-  \item We can approximate the posterior $p(z \mid x)$ with some probability distribution $q(z ; \lambda)$, where q is a distribution of the latent varibles z parameterized by $\lambda$.
-  \item Fortunately, we have already defined a tool (KL-divergence) that is a measure fo the difference between two probability distributions.
+  \item We can approximate the posterior $p(z \mid x)$ with some probability distribution $q(z ; \lambda)$, where q is a distribution of the latent variables z parameterized by $\lambda$.
+  \item Fortunately, we have already defined a tool (KL-divergence) that is a measure of the difference between two probability distributions.
   \item So the problem then becomes:
     \[\lambda^* = \text{argmin}_\lambda \text{divergence}(p(z|x), q(z; \lambda))\]
   \item Which we will frame as:
@@ -207,7 +207,7 @@
   [\cite{tran2016}]
 \end{frame}
 
-\begin{frame}{Maxmimizing ELBO using score function gradient}
+\begin{frame}{Maximizing ELBO using score function gradient}
   \begin{itemize}
   \item Gradient descent/ascent is used to maximize ELBO. We are then interested in:
     \[\nabla_\lambda ELBO(\lambda) = \nabla_\lambda \mathop{\mathbb{E}}_{q(z ; \lambda)} \left[\log p(x, z) - \log q(z ; \lambda) \right]\]
@@ -220,7 +220,7 @@
     \begin{enumerate}
     \item Draw S samples $z_s$ from  $q(z ; \lambda)$.
     \item evaluate the terms in equation \ref{elbograd} using $z_s$.
-    \item compute the empiracle mean across the samples of the evaluated terms from (2).
+    \item compute the empirical mean across the samples of the evaluated terms from (2).
     \end{enumerate}
   \end{itemize}
 \end{frame}
@@ -231,14 +231,14 @@
     \begin{enumerate}
     \item Draw S samples $z_s$ from  $q(z ; \lambda)$.
     \item evaluate the terms in equation \ref{elbograd} using $z_s$.
-    \item compute the empiracle mean across the samples of the evaluated terms from (2).
+    \item compute the empirical mean across the samples of the evaluated terms from (2).
     \end{enumerate}
   \item  Which gives the following estimate of the gradient:
       \[\nabla_\lambda ELBO(\lambda) \approx \frac{1}{S} \sum_{s=1}^{S} \left[ \left( \log p(x, z_s) - \log q(z_s; \lambda)\right) \nabla_\lambda \log q(z_s; \lambda) \right]\]
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Psudocode for ELBO gradient descent}
+\begin{frame}{Pseudocode for ELBO gradient descent}
   \[\nabla_\lambda ELBO(\lambda) \approx \frac{1}{S} \sum_{s=1}^{S} \left[ \left( \log p(x, z_s) - \log q(z_s; \lambda)\right) \nabla_\lambda \log q(z_s; \lambda) \right]\]
   \begin{figure}
     \includegraphics[width=3in]{ranganath.png}
