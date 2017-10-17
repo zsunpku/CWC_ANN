@@ -117,7 +117,7 @@
 \begin{frame}{So what does information entropy look like?}
     % \vskip 1cm
 \begin{itemize}
-\item From thermodynamics and statistical mechanics we have some idea of entropy as a measure of the disorder or randomness in a system. For information theory it is similar.\footnote{von Neumann told Shannon he should also call it entropy because ``nobody knows what entropy really is, so in any discussion you will always have an advantage.''}
+\item From thermodynamics and statistical mechanics we have some idea of entropy as a measure of the disorder or randomness in a system. For information theory it is similar.\footnote{von Neumann told Shannon he should also call it entropy because ``nobody knows what entropy really is, so in any discussion you will always have an advantage.'' (\cite{bishop})}
 \end{itemize}
 
 \begin{figure}
@@ -152,14 +152,14 @@
   \item Note that it is not a symmetrical quantity (e.g. $KL(p\|q) \ne KL(q\|p)$).
   \item Also, $KL(p\|q) \ge 0$,
   \item and $KL(p\|q) = 0$ only if p and q are identical (see \cite{bishop} for proof).
-  \item So practically speaking KL divergence is very useful as a cost function quantifying the similarity between two probability distributions.
+  \item So practically speaking KL-divergence is very useful as a cost function quantifying the similarity between two probability distributions.
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Equivalence of KL divergence and negative log likelihood}
+\begin{frame}{Equivalence of KL-divergence and negative log likelihood}
   \begin{itemize}
   \item Say we have $N$ observations of data $x_n$ from some unknown probability distribution $p(x)$.
-  \item We want to try to approximate $p(x)$ with a parametric distribution $q(x|\theta)$, by minimizing the KL divergence which can be approximated by:
+  \item We want to try to approximate $p(x)$ with a parametric distribution $q(x|\theta)$, by minimizing the KL-divergence which can be approximated by:
   \end{itemize}
   \begin{equation}
     KL(p\|q) \simeq \frac{1}{N} \sum_{n=1}^{N} \left[ -\ln q(x_n | \theta) + ln(p (x_n))\right]
@@ -169,7 +169,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{KL divergence for Bayesian problems}
+\begin{frame}{KL-divergence for Bayesian problems (\cite{tran2016})}
   \begin{itemize}
   \item Say we have some group of latent variables $z$ that define a hidden structure behind our data $x$. We can use Bayes' rule to define the distribution of $z$ given our observed data $x$ (the \textit{posterior}):
     \[p(z \mid x) = \frac{p(x, z)}{\int p(x, z) dz} = \frac{p(x|z) p(z)}{p(x)}\]
@@ -209,14 +209,14 @@
 
 \begin{frame}{Maximizing ELBO using score function gradient}
   \begin{itemize}
-  \item Gradient descent/ascent is used to maximize ELBO. We are then interested in:
+  \item Gradient ascent is used to maximize ELBO. We are then interested in:
     \[\nabla_\lambda ELBO(\lambda) = \nabla_\lambda \mathop{\mathbb{E}}_{q(z ; \lambda)} \left[\log p(x, z) - \log q(z ; \lambda) \right]\]
   \item This can be rewritten:
     \begin{equation}
       \label{elbograd}
       \nabla_\lambda ELBO =  \mathop{\mathbb{E}}_{q(z ; \lambda)} \nabla_\lambda \log q(z ; \lambda) \left(\log p(x, z) - \log q(z ; \lambda) \right)
     \end{equation}
-  \item Where so long as we know the score function $\nabla_\lambda \log q(z ; \lambda)$ we can use Monte Carlo integration to estimate both ELBO and its gradient:
+  \item Where so long as we know the score function $\nabla_\lambda \log q(z ; \lambda)$ we can use Monte Carlo integration to estimate both ELBO and its gradient (\cite{ranganath2014}):
     \begin{enumerate}
     \item Draw S samples $z_s$ from  $q(z ; \lambda)$.
     \item evaluate the terms in equation \ref{elbograd} using $z_s$.
@@ -225,7 +225,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Gradient descent for ELBO}
+\begin{frame}{Gradient ascent for ELBO (\cite{ranganath2014, tran2016})}
   \begin{itemize}
   \item From the previous slide: if we know the score function $\nabla_\lambda \log q(z ; \lambda)$ we can use Monte Carlo integration to estimate both ELBO and its gradient:
     \begin{enumerate}
@@ -238,7 +238,7 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Pseudocode for ELBO gradient descent}
+\begin{frame}{Pseudocode for ELBO gradient ascent}
   \[\nabla_\lambda ELBO(\lambda) \approx \frac{1}{S} \sum_{s=1}^{S} \left[ \left( \log p(x, z_s) - \log q(z_s; \lambda)\right) \nabla_\lambda \log q(z_s; \lambda) \right]\]
   \begin{figure}
     \includegraphics[width=3in]{ranganath.png}
