@@ -24,3 +24,5 @@ _region_*
 *.run.xml
 prv_*
 Week03/pollution.csv
+*#*
+*log*
