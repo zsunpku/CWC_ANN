@@ -6,6 +6,9 @@ Inspired by autograd's Bayesian neural network example.
 This example prettifies some of the tensor naming for visualization in
 TensorBoard. To view TensorBoard, run `tensorboard --logdir=log`.
 
+
+Modified by A. Massmann for CWC ANN meeting, orignal copy avail.:
+https://github.com/blei-lab/edward/blob/master/examples/bayesian_nn.py
 References
 ----------
 http://edwardlib.org/tutorials/bayesian-neural-network
@@ -36,6 +39,7 @@ y_test = y_test.astype(np.int64)
 ed.set_seed(42)
 
 def neural_network(x, W_0, W_1, W_2, b_0, b_1, b_2):
+  """define NN using hyperbolic tan functions"""
   h = tf.tanh(tf.matmul(x, W_0) + b_0)
   h = tf.tanh(tf.matmul(h, W_1) + b_1)
   h = tf.matmul(h, W_2) + b_2
@@ -102,21 +106,19 @@ inference = ed.KLqp({W_0: qW_0, b_0: qb_0,
                      W_1: qW_1, b_1: qb_1,
                      W_2: qW_2, b_2: qb_2}, data={x: x_train, y: y_train})
 
-# actually run model
+# fit model
 start = time.time()
-
-inference.run(n_iter=1000, n_samples=5, logdir='log')
+inference.run(n_iter=1000, n_samples=1, logdir='log')
 end = time.time()
 print('training wall clock time: %5.2f min' % ((end-start)/60.))
 
 
 sampled_y = y_sample.eval({x: x_test})
-accuracy = []
-for _y in sampled_y:
-  print(_y.shape)
+accuracy = np.ones(sampled_y.shape[0])*np.nan
+for i,_y in enumerate(sampled_y):
   error = _y - y_test
-  accuracy.append(float(error[error == 0].shape[0])\
-                  /float(error.shape[0]))
-accuracy = np.array(accuracy)
+  accuracy[i] = float(error[error == 0].shape[0])\
+                  /float(error.shape[0])
+
 print('mean accuracy: %f' % accuracy.mean())
 print('std accuracy: %f' % accuracy.std())
