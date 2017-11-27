@@ -19,8 +19,8 @@
 \usepackage[style=authoryear]{biblatex}
 \addbibresource{references.bib}
 
-\title[Your Short Title]{Bayes Networks and Probalistic Programming}
-\author{Adam Massmann}
+\title[Your Short Title]{Bayesian Neural  Networks and Probalistic Programming}
+\author{Adam Massmann and Laureline Josset}
 \institute{Water Center NN Meetings}
 \date{Week 5: Oct. 17th, 2017}
 
@@ -35,13 +35,55 @@
 %  \tableofcontents
 %\end{frame}
 
-\section{Introduction - Information Theory}
+\begin{frame}{Disclaimer}
+  Similar to the week 1 presentation:
+  \begin{itemize}
+  \item None of this content is original; it is all adapted from Sections 1.6, 9.4 and 10.1 in \cite{bishop}, as well as extensively from Edward's documentation at edwardlib.org (\cite{tran2016}), but any mistakes or typos are certainly my own.
+  \item This is only intended for use within CWC, just because there is a lot of stuff I don't fully understand so there might be some errors that need to be ironed out. I think of it as a starting point that will hopefully inspire some future discussions which will help us learn this stuff together.
+  \end{itemize}
+\end{frame}
+
+\section{Bayesian Neural Networks}
+\begin{frame}{Differences between Bayesian Neural Nets (BNN) and the Neural Nets  we've looked at?}
+  \begin{itemize}
+  \item BNN are essentially the same, except any weights or parameters in the neural network will be random variables with a prior distribution.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Advantages/disadvantages of BNN}
+  \begin{itemize}
+  \item Advantages
+    \begin{itemize}
+    \item Model will represent uncertainty.
+    \item In some applications, BNN result in better models for data-sparse problems than other methods (including non-Bayesian neural nets, see \cite{xiong2011} for example).
+    \end{itemize}
+  \item Disadvantages
+    \begin{itemize}
+    \item Numerical methods can be more complicated and some problems are intractable.
+    \item Sensitivity to prior?
+      \begin{itemize}
+      \item Edward Box advocates criticism of model (including choice of prior) which could overcome this (\cite{box1982}).
+      \end{itemize}
+      \item Seems like BNN are a little less ``plug and play.'' Hyperparameters, step sizes, etc. might need to be adjusted to get reasonable fits, and numerical methods for inference seem less universal (forum discourse.edward.org has some example issues users come across).
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Pause}
+  \begin{itemize}
+  \item We'll now look at a popular numerical method for inference in Bayesian problems, from the bigger picture fundamentals (taking an information theory perspective that was new to me) down to the numerical implementation.
+  \item It's kind of dense so if it's more useful to skip to the practical exercises say the word!
+  \end{itemize}
+\end{frame}
+
+\section{How do we computer inference given data (with an eye towards BNN)?}
+\subsection{Introduction - Information Theory}
 
 \begin{frame}{Introduction - Information Theory (see section 1.6 in Bishop)}
 % \vskip 1cm
 \begin{itemize}
 \item Consider the amount of information gained/learned by an event or observation (we'll call $x$). We would receive more new information from a very surprising event than an event we expect (because we already know something about the expected event).
-\item So say we want to quantify this ``amount of information'' contained in an event. This should then be a function of the probability of the event ($p(x)$). So the amount of information we'll call a function $h(\cdot )$, which will be a function of $p(x)$.
+\item So if we want to quantify this ``amount of information'' contained in an event we should use a function of the probability of the event ($p(x)$). The amount of information we'll call a function $h(\cdot )$, which will be a function of $p(x)$.
 \end{itemize}
 
 \end{frame}
@@ -75,33 +117,150 @@
 \begin{frame}{So what does information entropy look like?}
     % \vskip 1cm
 \begin{itemize}
-\item From thermodynamics and statistical mechanics we have some idea of entropy as a measure of the disorder or randomness in a system. For information theory it is similar.\footnote{von Neumann told Shannon he should also call it entropy because ``nobody knows what entropy really is, so in any discussion you will always have an advantage.''}
+\item From thermodynamics and statistical mechanics we have some idea of entropy as a measure of the disorder or randomness in a system. For information theory it is similar.\footnote{von Neumann told Shannon he should also call it entropy because ``nobody knows what entropy really is, so in any discussion you will always have an advantage.'' (\cite{bishop})}
 \end{itemize}
 
 \begin{figure}
 \includegraphics[width=3in]{entropy.png}
-\caption{\label{fig:entropy}From \cite{bishop}: Histograms of two probability distributions over thirty bins illustrating the higher value of entropy H for the broader distribution. The largest entropy would arise from a uniform distribution that would give $H = -ln 1/30 = 3.40$}
+\caption{\label{fig:entropy}From \cite{bishop}: Histograms of two probability distributions over thirty bins illustrating the higher value of entropy H for the broader distribution. The largest entropy would arise from a uniform distribution that would give $H = -\ln 1/30 = 3.40$}
 \end{figure}
 
 \end{frame}
 
 
-\section{Kullback-Leibler divergence}
+\subsection{Kullback-Leibler divergence}
 \begin{frame}{Kullback-Leibler divergence}
 \begin{itemize}
 \item Why should we even care about information theory or entropy?
   \begin{itemize}
-  \item Because we can use entropy ideas to perfrom inference on a probalistic model (e.g. a Bayes network), given data.
+  \item Because we can use entropy ideas to approximate inference on a probabilistic model, given data.
+  \item Say we have some phenomenon with a true probability distribution $p(x)$, which we are approximating with some [possibly parametric] distribution $q(x)$.
+  \item Then the additional necessary information required to communicate the value of $x$ as consequence of using $q(x)$ would be:
   \end{itemize}
 \end{itemize}
+\begin{equation}
+  \begin{split}
+    KL(p\|q) & = - \int p(x) \ln q(x) dx \, - \left(-\int p(x) \ln p(x) dx \right) \\
+    & =  - \int p(x) \ln  \frac{q(x)}{p(x)} dx
+  \end{split}
+\end{equation}
+  This is known as relative entropy or  Kullback-Leibler (KL) divergence (\cite{kullback1951}).
 \end{frame}
 
+\begin{frame}{Properties of Kullback-Leibler divergence}
+  \begin{itemize}
+  \item Note that it is not a symmetrical quantity (e.g. $KL(p\|q) \ne KL(q\|p)$).
+  \item Also, $KL(p\|q) \ge 0$,
+  \item and $KL(p\|q) = 0$ only if p and q are identical (see \cite{bishop} for proof).
+  \item So practically speaking KL-divergence is very useful as a cost function quantifying the similarity between two probability distributions.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Equivalence of KL-divergence and negative log likelihood}
+  \begin{itemize}
+  \item Say we have $N$ observations of data $x_n$ from some unknown probability distribution $p(x)$.
+  \item We want to try to approximate $p(x)$ with a parametric distribution $q(x|\theta)$, by minimizing the KL-divergence which can be approximated by:
+  \end{itemize}
+  \begin{equation}
+    KL(p\|q) \simeq \frac{1}{N} \sum_{n=1}^{N} \left[ -\ln q(x_n | \theta) + ln(p (x_n))\right]
+  \end{equation}
+  \begin{itemize}
+  \item The second term is not a function of $\theta$, and the first term is just the negative log likelihood. So for this example, minimizing KL-divergence is the same as minimizing the negative log likelihood, which we saw in Week 1!
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{KL-divergence for Bayesian problems (\cite{tran2016})}
+  \begin{itemize}
+  \item Say we have some group of latent variables $z$ that define a hidden structure behind our data $x$. We can use Bayes' rule to define the distribution of $z$ given our observed data $x$ (the \textit{posterior}):
+    \[p(z \mid x) = \frac{p(x, z)}{\int p(x, z) dz} = \frac{p(x|z) p(z)}{p(x)}\]
+  \item The main computational problem in calculating the posterior is that the normalizing constant is usually intractable. So instead of calculating the posterior we will approximate the posterior.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Approximating the posterior}
+  \begin{itemize}
+  \item We can approximate the posterior $p(z \mid x)$ with some probability distribution $q(z ; \lambda)$, where q is a distribution of the latent variables z parameterized by $\lambda$.
+  \item Fortunately, we have already defined a tool (KL-divergence) that is a measure of the difference between two probability distributions.
+  \item So the problem then becomes:
+    \[\lambda^* = \text{argmin}_\lambda \text{divergence}(p(z|x), q(z; \lambda))\]
+  \item Which we will frame as:
+    \[\lambda^* = \text{argmin}_\lambda \text{KL}(q(z; \lambda), p(z|x))\] %{I need to figure out why we can just switch q and p}
+  \item But, we still have $p(z|x)$ so we need to get rid of that.
+  \end{itemize}
+  [\cite{tran2016}]
+\end{frame}
+
+\begin{frame}{Minimizing KL-divergence}
+  \begin{itemize}
+  \item To get rid of dependence of $p(z|x)$ we can use:
+    \[\log p(x) = KL(q(z; \lambda) \| p(z | x)) \, + \mathop{\mathbb{E}}_{q(z ; \lambda)} \left[\log p(x, z) - \log q(z ; \lambda) \right]\] %{I have not foudn or looked at this proof}
+    \begin{itemize}
+    \item because $\log p(x)$ is invariant to $\lambda$, we can subtract this from $\text{KL}(q(z; \lambda), p(z|x))$ without affecting $\lambda^*$.
+    \item in which case we are left with:
+      \[\lambda^* = \text{argmin}_\lambda - \mathop{\mathbb{E}}_{q(z ; \lambda)} \left[\log p(x, z) - \log q(z ; \lambda) \right]\]
+    \end{itemize}
+  \item So minimizing KL-divergence is the same as maximizing:
+    \[\text{ELBO}(\lambda) = \mathop{\mathbb{E}}_{q(z ; \lambda)} \left[\log p(x, z) - \log q(z ; \lambda) \right]\]
+    Where ELBO is an acronym standing for the ``Evidence Lower Bound.''
+        
+  \end{itemize}
+  [\cite{tran2016}]
+\end{frame}
+
+\begin{frame}{Maximizing ELBO using score function gradient}
+  \begin{itemize}
+  \item Gradient ascent is used to maximize ELBO. We are then interested in:
+    \[\nabla_\lambda ELBO(\lambda) = \nabla_\lambda \mathop{\mathbb{E}}_{q(z ; \lambda)} \left[\log p(x, z) - \log q(z ; \lambda) \right]\]
+  \item This can be rewritten:
+    \begin{equation}
+      \label{elbograd}
+      \nabla_\lambda ELBO =  \mathop{\mathbb{E}}_{q(z ; \lambda)} \nabla_\lambda \log q(z ; \lambda) \left(\log p(x, z) - \log q(z ; \lambda) \right)
+    \end{equation}
+  \item Where so long as we know the score function $\nabla_\lambda \log q(z ; \lambda)$ we can use Monte Carlo integration to estimate both ELBO and its gradient (\cite{ranganath2014}):
+    \begin{enumerate}
+    \item Draw S samples $z_s$ from  $q(z ; \lambda)$.
+    \item evaluate the terms in equation \ref{elbograd} using $z_s$.
+    \item compute the empirical mean across the samples of the evaluated terms from (2).
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Gradient ascent for ELBO (\cite{ranganath2014, tran2016})}
+  \begin{itemize}
+  \item From the previous slide: if we know the score function $\nabla_\lambda \log q(z ; \lambda)$ we can use Monte Carlo integration to estimate both ELBO and its gradient:
+    \begin{enumerate}
+    \item Draw S samples $z_s$ from  $q(z ; \lambda)$.
+    \item evaluate the terms in equation \ref{elbograd} using $z_s$.
+    \item compute the empirical mean across the samples of the evaluated terms from (2).
+    \end{enumerate}
+  \item  Which gives the following estimate of the gradient:
+      \[\nabla_\lambda ELBO(\lambda) \approx \frac{1}{S} \sum_{s=1}^{S} \left[ \left( \log p(x, z_s) - \log q(z_s; \lambda)\right) \nabla_\lambda \log q(z_s; \lambda) \right]\]
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Pseudocode for ELBO gradient ascent}
+  \[\nabla_\lambda ELBO(\lambda) \approx \frac{1}{S} \sum_{s=1}^{S} \left[ \left( \log p(x, z_s) - \log q(z_s; \lambda)\right) \nabla_\lambda \log q(z_s; \lambda) \right]\]
+  \begin{figure}
+    \includegraphics[width=3in]{ranganath.png}
+    \caption{Reproduced from \cite{ranganath2014}.}
+  \end{figure}
+\end{frame}
+
+\section{Last Words}
+\begin{frame}{On to the practical exercise...}
+  \begin{itemize}
+  \item Note I've only covered one numerical method, and the exercise focuses on the very basics of setting up and inferring a BNN in Edward.
+  \item There are a lot more (and more sophisticated) techniques that leverage probabilistic programming, so I strongly encourage anyone to explore edwardlib.org for more examples if they are interested.
+  \item The focus here was on neural networks because that's what we've been talking about, and I kept it relatively simple because this is all new for me.
+  \end{itemize}
+\end{frame}
 
 \section{References}
 \begin{frame}{References}
-  \begin{block}
+  \begin{block}{See sections 1.6, 9.4, and 10.1 in Bishop, and edwardlib.org}
+    \AtNextBibliography{\small}
     \printbibliography
-    \end{block}
+  \end{block}
 \end{frame}
 
 % \begin{table}
